@@ -1,9 +1,16 @@
 [project]
-name = "repl-nix-workspace"
-version = "0.1.0"
-description = "Add your description here"
+name = "forma-calculadora"
+version = "1.0.0"
+description = "Calculadora simbólica: LaTeX -> SymPy -> JSON, con cuaderno en el navegador"
 requires-python = ">=3.11"
 dependencies = [
     "pint>=0.25.3",
     "sympy>=1.14.0",
 ]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

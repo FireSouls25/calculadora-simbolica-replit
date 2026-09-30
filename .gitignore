@@ -8,3 +8,9 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Test cache
+.pytest_cache/
+
+# Herramientas del entorno de Replit
+lancedb/

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Calculadora.ipynb — Forma</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/mathlive@0.111.0/mathlive-fonts.css" />
+    <script defer src="https://unpkg.com/mathlive@0.111.0/mathlive.min.js"></script>
+    <script type="module" src="/js/main.js"></script>
+  </head>
+  <body>
+    <header class="notebook-bar">
+      <a class="brand" href="/" aria-label="Calculadora">forma<span>.</span></a>
+      <div class="notebook-title">
+        <strong>Calculadora.ipynb</strong>
+        <span id="save-state">guardado localmente</span>
+      </div>
+      <nav class="toolbar" aria-label="Acciones del cuaderno">
+        <button id="new-cell" class="toolbar-button" type="button" title="Añadir celda">＋ <span>Celda</span></button>
+        <button id="run-current" class="toolbar-button run-toolbar" type="button" title="Ejecutar y avanzar (Shift + Enter)">▶ <span>Ejecutar</span></button>
+        <button id="run-all" class="toolbar-button" type="button" title="Ejecutar todas las celdas">▶▶ <span>Todo</span></button>
+        <button id="open-converter" class="toolbar-button" type="button" title="Convertir unidades">⇄ <span>Unidades</span></button>
+        <button id="open-help" class="toolbar-button" type="button" title="Cómo se escribe">? <span>Ayuda</span></button>
+      </nav>
+    </header>
+
+    <!-- Barra de símbolos: siempre visible, encima del cuaderno -->
+    <div class="symbol-shelf" id="symbol-shelf">
+      <div class="shelf-head">
+        <span class="shelf-title"><span class="sigma">∑</span> Símbolos</span>
+        <div class="shelf-groups" id="symbol-groups" role="tablist" aria-label="Grupos de símbolos"></div>
+        <input
+          id="symbol-search"
+          class="shelf-search"
+          type="search"
+          placeholder="Buscar…"
+          aria-label="Buscar símbolos"
+          autocomplete="off"
+        />
+      </div>
+      <div class="shelf-keys" id="symbol-keys" aria-label="Símbolos para insertar"></div>
+      <p class="shelf-hint" id="shelf-hint"></p>
+    </div>
+
+    <main class="notebook-main">
+      <p class="shortcut-hint">
+        Escribe en una celda · <kbd>Shift</kbd>+<kbd>Enter</kbd> ejecuta y continúa ·
+        <kbd>Esc</kbd> cierra los cuadros
+      </p>
+      <section id="cells" class="cells" aria-label="Celdas del cuaderno"></section>
+
+      <button id="empty-add-cell" class="empty-add-cell" type="button">
+        <span>＋</span> Añadir una celda
+      </button>
+
+      <section class="examples" id="examples" aria-label="Ejemplos">
+        <h2 class="examples-title">Prueba con…</h2>
+        <div class="examples-grid" id="examples-grid"></div>
+      </section>
+    </main>
+
+    <div class="modal-backdrop" id="converter-modal" hidden>
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="converter-title">
+        <div class="dialog-heading">
+          <div><span class="eyebrow">CONVERSOR</span><h2 id="converter-title">Unidades</h2></div>
+          <button id="close-converter" class="close-button" type="button" aria-label="Cerrar">×</button>
+        </div>
+        <label class="field-label" for="unit-category">Magnitud</label>
+        <select id="unit-category" class="select-control"></select>
+        <div class="conversion-row">
+          <label class="conversion-field"
+            ><span class="field-label">Valor · origen</span>
+            <div class="value-unit">
+              <input id="unit-value" type="text" inputmode="decimal" value="1" />
+              <select id="unit-from" class="select-control"></select>
+            </div>
+          </label>
+          <button class="swap-button" id="swap-units" type="button" title="Intercambiar unidades">⇄</button>
+          <label class="conversion-field"
+            ><span class="field-label">Destino</span><select id="unit-to" class="select-control"></select
+          ></label>
+        </div>
+        <button id="convert-button" class="convert-button" type="button">Convertir</button>
+        <div id="conversion-result" class="conversion-result" aria-live="polite">
+          <span class="result-caption">RESULTADO</span><strong>—</strong><span class="result-unit"></span>
+        </div>
+        <div id="conversion-error" class="conversion-error" role="alert"></div>
+      </section>
+    </div>
+
+    <div class="modal-backdrop" id="help-modal" hidden>
+      <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="help-title">
+        <div class="dialog-heading">
+          <div><span class="eyebrow">SINTAXIS</span><h2 id="help-title">Cómo se escribe</h2></div>
+          <button id="close-help" class="close-button" type="button" aria-label="Cerrar">×</button>
+        </div>
+        <div class="help-body" id="help-body"></div>
+      </section>
+    </div>
+  </body>
+</html>
