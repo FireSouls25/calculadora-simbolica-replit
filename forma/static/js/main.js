@@ -5,6 +5,7 @@
 import { fetchPalette } from "./api.js";
 import {
   configureNotebook,
+  createField,
   deleteCell,
   focusCell,
   insertCellAfter,
@@ -73,9 +74,15 @@ function buildExamples(examples) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "example";
-    button.innerHTML = `<code></code><span></span>`;
-    button.querySelector("code").textContent = example.expression;
-    button.querySelector("span").textContent = example.note || "";
+    button.title = example.expression;
+    button.setAttribute("aria-label", `Ejemplo: ${example.note || example.expression}`);
+    // La misma fábrica que usan las celdas: math-field si MathLive está,
+    // texto plano si no (así los ejemplos nunca salen en crudo).
+    button.append(createField(example.expression, true));
+    const note = document.createElement("span");
+    note.textContent = example.note || "";
+    button.append(note);
+    button.addEventListener("mousedown", (event) => event.preventDefault());
     button.addEventListener("click", () => {
       const cell = activeCell() || lastCell();
       cell.field.value = example.expression;

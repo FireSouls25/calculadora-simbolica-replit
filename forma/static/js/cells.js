@@ -28,7 +28,7 @@ export function configureNotebook(options) {
 
 /* ------------------------------------------------------------------ campos */
 
-function createField(value = "", readOnly = false) {
+export function createField(value = "", readOnly = false) {
   if (!mathLiveReady) {
     const input = document.createElement("input");
     input.type = "text";
@@ -36,14 +36,20 @@ function createField(value = "", readOnly = false) {
     input.value = value;
     input.spellcheck = false;
     input.setAttribute("aria-label", readOnly ? "Resultado" : "Escribe una expresión matemática");
-    if (readOnly) input.readOnly = true;
+    if (readOnly) {
+      input.readOnly = true;
+      input.tabIndex = -1; // los resultados no entran en el tabulador
+    }
     return input;
   }
   const field = document.createElement("math-field");
   field.className = readOnly ? "result-field" : "editor-field";
   field.setAttribute("math-virtual-keyboard-policy", "manual");
   field.setAttribute("aria-label", readOnly ? "Resultado exacto" : "Escribe una expresión matemática");
-  if (readOnly) field.setAttribute("read-only", "");
+  if (readOnly) {
+    field.setAttribute("read-only", "");
+    field.setAttribute("tabindex", "-1"); // resultados y ejemplos: no tabulables
+  }
   field.value = value;
   return field;
 }
