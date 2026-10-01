@@ -156,6 +156,9 @@ def _make_table() -> dict[str, FunctionSpec]:
         ("sinh", sp.sinh, 1, 1), ("cosh", sp.cosh, 1, 1), ("tanh", sp.tanh, 1, 1),
         ("coth", sp.coth, 1, 1), ("sech", sp.sech, 1, 1), ("csch", sp.csch, 1, 1),
         ("asinh", sp.asinh, 1, 1), ("acosh", sp.acosh, 1, 1), ("atanh", sp.atanh, 1, 1),
+        # Ángulos explícitos
+        ("rad", lambda a: a * sp.pi / 180, 1, 1),
+        ("deg", lambda a: a * sp.Integer(180) / sp.pi, 1, 1),
         # Logaritmos y exponentes
         ("exp", sp.exp, 1, 1), ("ln", sp.log, 1, 1), ("log", _log, 1, 2),
         ("log10", lambda v: sp.log(v, 10), 1, 1), ("log2", lambda v: sp.log(v, 2), 1, 1),
@@ -218,6 +221,16 @@ def _make_table() -> dict[str, FunctionSpec]:
 
 FUNCTIONS: Mapping[str, FunctionSpec] = _make_table()
 
+#: Trigonométricas cuyo argumento numérico se lee en GRADOS (convención de
+#: calculadora): sin(90) = 1. Si el argumento trae π se respeta el radián.
+DEGREE_ARGUMENT_FUNCTIONS = frozenset({"sin", "cos", "tan", "cot", "sec", "csc"})
+
+#: Trigonométricas inversas cuyo resultado numérico se devuelve en GRADOS:
+#: asin(0.5) = 30.
+DEGREE_RESULT_FUNCTIONS = frozenset(
+    {"asin", "acos", "atan", "acot", "asec", "acsc", "atan2"}
+)
+
 #: Alias en LaTeX -> nombre interno de función.
 FUNCTION_COMMANDS: Mapping[str, str] = {
     r"\sin": "sin", r"\cos": "cos", r"\tan": "tan", r"\cot": "cot",
@@ -230,7 +243,7 @@ FUNCTION_COMMANDS: Mapping[str, str] = {
     r"\arsinh": "asinh", r"\arcosh": "acosh", r"\artanh": "atanh",
     r"\exp": "exp", r"\ln": "ln", r"\log": "log", r"\lg": "log",
     r"\sqrt": "sqrt", r"\cbrt": "cbrt",
-    r"\det": "det", r"\gcd": "gcd", r"\dim": "degree_poly",
+    r"\det": "det", r"\gcd": "gcd", r"\dim": "degree_poly", r"\rad": "rad",
     r"\abs": "abs", r"\sign": "sign", r"\sgn": "sign",
     r"\min": "min", r"\max": "max", r"\arg": "arg", r"\conj": "conj",
     r"\deg": "degree", r"\arctan2": "atan2",

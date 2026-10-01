@@ -229,7 +229,29 @@ def tokenize(source: str) -> list[Token]:
             value = value[:-1]
         tokens.append(Token(kind, value, match.start()))
     tokens.append(Token("end", "", len(source)))
-    return tokens
+    return _join_function_names(tokens)
+
+
+def _join_function_names(tokens: list[Token]) -> list[Token]:
+    """``atan2`` llega como ``atan`` + ``2``: se unen si la función existe."""
+    joined: list[Token] = []
+    index = 0
+    while index < len(tokens):
+        token = tokens[index]
+        following = tokens[index + 1] if index + 1 < len(tokens) else None
+        if (
+            token.kind == "ident"
+            and following is not None
+            and following.kind == "number"
+            and following.position == token.position + len(token.value)
+            and f"{token.value}{following.value}" in FUNCTIONS
+        ):
+            joined.append(Token("ident", f"{token.value}{following.value}", token.position))
+            index += 2
+            continue
+        joined.append(token)
+        index += 1
+    return joined
 
 
 # ---------------------------------------------------------------------------

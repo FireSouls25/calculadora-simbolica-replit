@@ -60,6 +60,36 @@ def test_logaritmos_tienen_la_base_correcta() -> None:
     assert exact(r"\log_{2}{8}") == "3"       # base explícita
 
 
+@pytest.mark.parametrize(
+    "source, expected",
+    [
+        ("sin(90)", "1"),          # los números van en GRADOS
+        ("cos(180)", "-1"),
+        ("tan(45)", "1"),
+        ("sin(30)", "1/2"),
+        ("sin(60)", "sqrt(3)/2"),
+        ("asin(0.5)", "30"),       # y las inversas devuelven grados
+        ("atan(1)", "45"),
+        ("acos(1)", "0"),
+    ],
+)
+def test_trigonometria_en_grados(source: str, expected: str) -> None:
+    assert exact(source) == expected
+
+
+@pytest.mark.parametrize("source, expected", [
+    (r"\sin{\pi/6}", "1/2"),       # con π manda el radián
+    (r"\cos{\pi}", "-1"),
+    (r"\sin{30\degree}", "1/2"),
+    ("sinh(1)", "sinh(1)"),        # las hiperbólicas no son ángulos
+    ("rad(90)", "pi/2"),
+    ("deg(pi/2)", "90"),
+    (r"\int_0^{\pi} \sin x dx", "2"),
+])
+def test_radianes_explicitos(source: str, expected: str) -> None:
+    assert exact(source) == expected
+
+
 def test_multiplicacion_implicita() -> None:
     assert exact("2x") == "2*x"
     assert exact("sin x") == "sin(x)"

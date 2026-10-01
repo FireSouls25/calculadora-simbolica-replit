@@ -31,7 +31,14 @@ from .latex import (
     Unary,
     render_name,
 )
-from .symbols import CONSTANTS, DEFAULT_LIMITS, FUNCTIONS, Limits
+from .symbols import (
+    CONSTANTS,
+    DEFAULT_LIMITS,
+    DEGREE_ARGUMENT_FUNCTIONS,
+    DEGREE_RESULT_FUNCTIONS,
+    FUNCTIONS,
+    Limits,
+)
 
 # SymPyBlocked: Python limita en 4300 dígitos la conversión entero -> texto.
 if hasattr(sys, "set_int_max_str_digits"):  # pragma: no branch
@@ -283,8 +290,13 @@ class Evaluator:
             raise CalculationError(f"No conozco la función «{name}».")
         spec.check(len(node.args))
         arguments = [self.visit(argument) for argument in node.args]
+        if name in DEGREE_ARGUMENT_FUNCTIONS and len(arguments) == 1:
+            arguments[0] = _to_radians(arguments[0])
         try:
-            return _coerce(spec.func(*arguments))
+            result = spec.func(*arguments)
+            if name in DEGREE_RESULT_FUNCTIONS:
+                result = _to_degrees(result)
+            return _coerce(result)
         except CalculationError:
             raise
         except (TypeError, ValueError, ZeroDivisionError) as exc:
@@ -430,6 +442,24 @@ class Evaluator:
         if lower.is_Integer is True and upper.is_Integer is True:
             return max(0, int(upper) - int(lower) + 1)
         return None
+
+
+def _to_radians(value: sp.Expr) -> sp.Expr:
+    """``sin(90)`` son 90 grados; ``sin(π/6)`` se queda en radianes.
+
+    Solo se convierten los números exactos: cualquier expresión con π ya está
+    escrita en radianes y no hay que tocarla.
+    """
+    if value.is_Rational is True:
+        return value * sp.pi / 180
+    return value
+
+
+def _to_degrees(value: sp.Expr) -> sp.Expr:
+    """``asin(0.5)`` son 30 grados, no π/6."""
+    if value.is_number and value.is_real is not False and value.is_finite is True:
+        return value * sp.Integer(180) / sp.pi
+    return value
 
 
 def _coerce(result: Any) -> Any:

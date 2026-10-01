@@ -24,7 +24,7 @@ const HELP = [
   ["Multiplicación", "2x, x(y+1), 3π. El punto se multiplica solo."],
   ["Logaritmos", "log es decimal, ln es natural: log(100)=2. Con base: log_2(8)."],
   ["Porcentajes", "50% vale 1/2. Para el resto de una división, mod o \\bmod."],
-  ["Grados y radianes", "30\\degree, sin(30\\degree)=1/2."],
+  ["Grados y radianes", "En las trigonométricas los números van en GRADOS: sin(90)=1, sin(30)=1/2. Con π son radianes: sin(π/6)=1/2. Usa rad(90) o deg(π/2) para cambiar de unidad, y 30\\degree para multiplicar por grados."],
   ["Complejos", "i es la unidad imaginaria: (1+i)^8=16."],
   ["Sumas e integrales", "\\sum_{i=1}^{10} i^2, \\int_0^1 x^2 dx, \\lim_{x\\to 0}…"],
   ["Decimales exactos", "0.1+0.2 se calcula como 3/10, sin errores de coma flotante."],

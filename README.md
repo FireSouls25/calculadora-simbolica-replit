@@ -52,7 +52,11 @@ Respuesta de cálculo:
 
 - **Aritmética exacta**: `0.1+0.2` → `3/10` (nada de coma flotante), `10/3` → `10/3`.
 - **Funciones y constantes**: `log` es decimal y `ln` natural, `\log_{2}{8}`,
-  `30\degree`, `i` como unidad imaginaria, `e`, `τ`, `φ`, Catalan, EulerGamma.
+  `i` como unidad imaginaria, `e`, `τ`, `φ`, Catalan, EulerGamma.
+- **Grados y radianes**: en las trigonométricas los números van en **grados**
+  (`sin(90)=1`, `asin(0.5)=30`), como en una calculadora de bolsillo. Si la
+  expresión lleva π se respeta el radián (`sin(π/6)=1/2`), y `rad(90)` /
+  `deg(π/2)` / `30\degree` sirven para hacerlo explícito.
 - **Cálculo**: `\sum`, `\prod`, `\int`, `\lim`, `diff`, `series`, `solve`.
 - **Álgebra**: `simplify`, `expand`, `factor`, `cancel`, `subs`, `together`.
 - **Conjuntos y lógica**: `{1,2,3}`, `{n | n > 0}`, `\in`, `\cup`, `\cap`,
